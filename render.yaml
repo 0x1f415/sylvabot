@@ -3,7 +3,7 @@ services:
   - type: worker
     name: sylvabot node worker
     env: node
-    buildCommand: npm i
+    buildCommand: npm i && npm run migrate
     startCommand: npm run start:prod
     plan: starter
     envVars:
