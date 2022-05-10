@@ -11,6 +11,10 @@ services:
         fromDatabase:
           name: sylvabot
           property: connectionString
+      - key: ADMIN_CONNECTION_STRING
+        fromDatabase:
+          name: sylvabot
+          property: connectionString
 
 databases:
   - name: sylvabot

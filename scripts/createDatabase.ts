@@ -1,19 +1,19 @@
 import knex from 'knex';
 
-import { connection } from '../orm.config';
-
 import dotenv from 'dotenv';
 import { ConnectionString } from 'connection-string';
 dotenv.config();
 
 async function main() {
-	const { clientUrl } = connection;
+	const { ADMIN_CONNECTION_STRING } = process.env;
 
-	const dbName = new ConnectionString(clientUrl).path?.[0];
+	if (!ADMIN_CONNECTION_STRING) {
+		console.error('ADMIN_CONNECTION_STRING not present in env');
+		process.exit(1);
+	}
+	const dbName = new ConnectionString(ADMIN_CONNECTION_STRING).path?.[0];
 
 	if (!dbName) throw new Error('Expected dbName in connection');
-
-	const { ADMIN_CONNECTION_STRING } = process.env;
 
 	const k = knex({
 		client: 'pg',
