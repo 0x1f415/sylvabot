@@ -28,7 +28,10 @@ const config: Options = {
 	},
 	...connection,
 	baseDir: process.cwd(),
-	pool: { min: 10, max: 20 }
+	pool: { min: 10, max: 20 },
+	schemaGenerator: {
+		disableForeignKeys: false
+	}
 };
 
 export default config;
