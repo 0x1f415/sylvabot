@@ -4,7 +4,7 @@ services:
       name: sylvabot node worker
       env: node
       buildCommand: npm i
-      startCommand: npm run migrate && npm run start:prod
+      startCommand: npm run start:prod
       plan: starter
       envVars:
           - key: DB_CONNECTION_STRING
