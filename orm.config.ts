@@ -11,10 +11,10 @@ const entities = [DailyCheckIn];
 
 dotenv.config();
 
-const { DB_USER, DB_PASSWORD } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST = 'localhost', DB_NAME = 'sylvabot' } = process.env;
 connection = {
-	host: 'localhost',
-	dbName: 'sylvabot',
+	host: DB_HOST,
+	dbName: DB_NAME,
 	user: DB_USER,
 	password: DB_PASSWORD
 };
