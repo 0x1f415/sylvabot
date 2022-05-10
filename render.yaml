@@ -3,6 +3,7 @@ services:
     - type: worker
       name: bot
       env: node
+      startCommand: npm run start
       plan: free
 
 databases:
