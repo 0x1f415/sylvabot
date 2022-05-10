@@ -4,15 +4,16 @@ import { addDays } from 'date-fns';
 import { MikroORM } from '@mikro-orm/core';
 import { EntityRepository, SqlEntityRepository } from '@mikro-orm/postgresql';
 import { DailyCheckIn } from './entities/DailyCheckIn.entity';
+import cron from 'node-cron';
 
 dotenv.config();
 dotenv.config();
 
 // replace the value below with the Telegram token you receive from @BotFather
-const { TOKEN, CHAT_ID } = process.env;
+const { TOKEN, CHAT_ID, CRON } = process.env;
 
-if (!TOKEN || !CHAT_ID) {
-	console.error('fuck u');
+if (!TOKEN || !CHAT_ID || !CRON) {
+	console.error('missing an argument!');
 	process.exit(1);
 }
 
@@ -86,5 +87,6 @@ class SylvaBot {
 
 const sylvaInstance = new SylvaBot(CHAT_ID, TOKEN);
 
-sylvaInstance.process()
-setInterval(() => sylvaInstance.process(), 30 * 1000)
+cron.schedule(CRON, () => {
+	sylvaInstance.process()
+})
