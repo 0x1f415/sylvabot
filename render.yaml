@@ -1,0 +1,12 @@
+services:
+    # A background worker that consumes a queue
+    - type: worker
+      name: queue
+      env: docker
+      plan: free
+
+databases:
+    - name: sylvabot
+      databaseName: sylvabot
+      ipAllowList: []
+      plan: free
