@@ -29,25 +29,33 @@ class SylvaBot {
 	}
 
 	private async repoQuery<R>(query: (repo: EntityRepository<DailyCheckIn>) => Promise<R>) {
+		console.log('attempting to initialize orm')
 		const orm = await MikroORM.init();
 		const repo: SqlEntityRepository<DailyCheckIn> = orm.em.fork().getRepository(DailyCheckIn);
+		console.log('performing query...')
 		const response = await query(repo);
+		console.log('query success');
 		await orm.close();
 		return response;
 	}
 
 	private async unpinMessage(message_id: number) {
-		return this.bot.unpinChatMessage(this.chat, { message_id } as any)
+		console.log('attempting to unpin message');
+		await this.bot.unpinChatMessage(this.chat, { message_id } as any)
+		console.log('unpin success');
 	}
 
 	private async stopPoll(message_id: number) {
-		return this.bot.stopPoll(this.chat, message_id).catch((e: Error) => {
+		console.log('attempting to stop poll(s)');
+		await this.bot.stopPoll(this.chat, message_id).catch((e: Error) => {
 			if (e.message.includes('poll has already been closed')) return Promise.resolve();
 			else throw e;
 		})
+		console.log('unpin success');
 	}
 
 	private async createNewPoll() {
+		console.log('attempting to send new poll');
 		const { message_id } = await this.bot.sendPoll(
 			this.chat,
 			'Daily Check In',
@@ -65,8 +73,13 @@ class SylvaBot {
 				close_date: addDays(Date.now(), 1).getDate()
 			}
 		);
+		console.log('new poll success');
+		console.log('attempting to pin new poll');
 		await this.bot.pinChatMessage(this.chat, message_id)
+		console.log('pin success');
+		console.log('attempting to persist new pin to db');
 		await this.repoQuery(async r => r.persistAndFlush(r.create({ message_id })))
+		console.log('persist success');
 	}
 
 	private async clearPolls() {
