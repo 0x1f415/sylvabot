@@ -1,19 +1,19 @@
 services:
-    # A background worker that consumes a queue
-    - type: worker
-      name: sylvabot node worker
-      env: node
-      buildCommand: npm i
-      startCommand: npm run start:prod
-      plan: starter
-      envVars:
-          - key: DB_CONNECTION_STRING
-            fromDatabase:
-                name: sylvabot
-                property: connectionString
+  # A background worker that consumes a queue
+  - type: worker
+    name: sylvabot node worker
+    env: node
+    buildCommand: npm i
+    startCommand: npm run start:prod
+    plan: starter
+    envVars:
+      - key: DB_CONNECTION_STRING
+        fromDatabase:
+          name: sylvabot
+          property: connectionString
 
 databases:
-    - name: sylvabot
-      databaseName: sylvabot
-      ipAllowList: []
-      plan: free
+  - name: sylvabot
+    databaseName: sylvabot
+    ipAllowList: []
+    plan: free

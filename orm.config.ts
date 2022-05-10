@@ -10,6 +10,12 @@ const entities = [DailyCheckIn];
 dotenv.config();
 
 const { DB_CONNECTION_STRING } = process.env;
+
+if (!DB_CONNECTION_STRING) {
+	console.error('no DB_CONNECTION_STRING in env')
+	process.exit(1);
+}
+
 connection = {
 	clientUrl: DB_CONNECTION_STRING
 };
