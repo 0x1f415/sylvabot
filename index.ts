@@ -4,7 +4,7 @@ import { addDays } from 'date-fns';
 import { MikroORM } from '@mikro-orm/core';
 import { EntityRepository, SqlEntityRepository } from '@mikro-orm/postgresql';
 import { DailyCheckIn } from './entities/DailyCheckIn.entity';
-import cron from 'node-cron';
+import { CronJob } from 'cron';
 
 dotenv.config();
 dotenv.config();
@@ -100,6 +100,12 @@ class SylvaBot {
 
 const sylvaInstance = new SylvaBot(CHAT_ID, TOKEN);
 
-cron.schedule(CRON, () => {
-	sylvaInstance.process()
-})
+const job = new CronJob(
+	CRON,
+	() => {
+		sylvaInstance.process()
+	},
+	null,
+	true,
+	'America/New_York'
+)
