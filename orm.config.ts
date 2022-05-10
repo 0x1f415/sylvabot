@@ -21,7 +21,8 @@ const config: Options = {
 		disableDynamicFileAccess: true
 	},
 	...connection,
-	baseDir: process.cwd()
+	baseDir: process.cwd(),
+	pool: { min: 10, max: 20 }
 };
 
 export default config;
