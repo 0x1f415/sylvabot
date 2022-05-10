@@ -1,8 +1,7 @@
 services:
     # A background worker that consumes a queue
     - type: worker
-      name: queue
-      env: docker
+      name: bot
       plan: free
 
 databases:
