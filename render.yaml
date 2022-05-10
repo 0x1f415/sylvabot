@@ -4,7 +4,7 @@ services:
       name: bot
       env: node
       startCommand: npm run start
-      plan: free
+      plan: starter
 
 databases:
     - name: sylvabot
