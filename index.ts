@@ -1,7 +1,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
 import { addDays } from 'date-fns';
-import { MikroORM } from '@mikro-orm/core';
+import { MikroORM, RequestContext } from '@mikro-orm/core';
 import { EntityRepository, SqlEntityRepository } from '@mikro-orm/postgresql';
 import { DailyCheckIn } from './entities/DailyCheckIn.entity';
 import { CronJob } from 'cron';
@@ -19,8 +19,41 @@ if (!TOKEN || !CHAT_ID || !CRON) {
 
 class SylvaBot {
 	private readonly bot: TelegramBot;
+	private readonly orm: Promise<MikroORM>;
+
+	private readonly commands: Record<string, () => Promise<void>> = {
+		force: () => this.process()
+
+	}
+
 	constructor(private readonly chat: string, token: string) {
 		this.bot = new TelegramBot(token, { polling: true });
+		this.orm = MikroORM.init();
+
+		const me = this.bot.getMe();
+		const chatAdmins = this.bot.getChatAdministrators(chat);
+
+		this.bot.on('message', async message => {
+			const { from, text } = message;
+			const myUsername = (await me).username;
+			if (text?.startsWith(`@${myUsername}`)) {
+				const result = new RegExp(`\\@${myUsername} (.*)`).exec(text);
+				if (result) {
+					const [, command] = result;
+
+					if (this.commands[command]) {
+						await this.commands[command]()
+					};
+				}
+			}
+		})
+
+		console.log('performing startup health check...');
+		this.healthCheck().then(() => console.log('health check success'), err => {
+			console.log('health check failure')
+			console.error(err);
+			process.exit(1);
+		})
 	}
 
 	async process() {
@@ -29,13 +62,11 @@ class SylvaBot {
 	}
 
 	private async repoQuery<R>(query: (repo: EntityRepository<DailyCheckIn>) => Promise<R>) {
-		console.log('attempting to initialize orm')
-		const orm = await MikroORM.init();
+		const orm = await this.orm;
 		const repo: SqlEntityRepository<DailyCheckIn> = orm.em.fork().getRepository(DailyCheckIn);
 		console.log('performing query...')
 		const response = await query(repo);
 		console.log('query success');
-		await orm.close();
 		return response;
 	}
 
@@ -95,6 +126,10 @@ class SylvaBot {
 				console.log('successfully removed', p.message_id, 'from database')
 			}))
 		})
+	}
+
+	private async healthCheck() {
+		await this.repoQuery(r => r.createQueryBuilder().raw('SELECT NOW();'))
 	}
 }
 
