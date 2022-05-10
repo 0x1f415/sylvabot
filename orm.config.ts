@@ -5,18 +5,13 @@ import dotenv from 'dotenv';
 
 let connection: ConnectionOptions;
 
-// const { VERCEL } = process.env;
-
 const entities = [DailyCheckIn];
 
 dotenv.config();
 
-const { DB_USER, DB_PASSWORD, DB_HOST = 'localhost', DB_NAME = 'sylvabot' } = process.env;
+const { DB_CONNECTION_STRING } = process.env;
 connection = {
-	host: DB_HOST,
-	dbName: DB_NAME,
-	user: DB_USER,
-	password: DB_PASSWORD
+	clientUrl: DB_CONNECTION_STRING
 };
 
 const config: Options = {

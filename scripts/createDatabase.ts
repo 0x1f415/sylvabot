@@ -3,23 +3,21 @@ import knex from 'knex';
 import { connection } from '../orm.config';
 
 import dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
+import { ConnectionString } from 'connection-string';
+dotenv.config();
 
 async function main() {
-	const { dbName, host } = connection;
+	const { clientUrl } = connection;
+
+	const dbName = new ConnectionString(clientUrl).path?.[0];
 
 	if (!dbName) throw new Error('Expected dbName in connection');
 
-	const { DB_ADMIN_USER, DB_ADMIN_PASSWORD } = process.env;
+	const { ADMIN_CONNECTION_STRING } = process.env;
 
 	const k = knex({
 		client: 'pg',
-		connection: {
-			database: 'postgres',
-			host,
-			user: DB_ADMIN_USER,
-			password: DB_ADMIN_PASSWORD
-		}
+		connection: ADMIN_CONNECTION_STRING
 	});
 
 	const dbs = await k.raw(

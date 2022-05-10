@@ -7,26 +7,10 @@ services:
       startCommand: npm run migrate && npm run start:prod
       plan: starter
       envVars:
-          - key: DB_HOST
-            fromService:
-                type: postgres
+          - key: DB_CONNECTION_STRING
+            fromDatabase:
                 name: sylvabot
-                property: host
-          - key: DB_PASSWORD
-            fromService:
-                type: postgres
-                name: sylvabot
-                property: password
-          - key: DB_NAME
-            fromService:
-                type: postgres
-                name: sylvabot
-                property: database
-          - key: DB_USER
-            fromService:
-                type: postgres
-                name: sylvabot
-                property: user
+                property: connectionString
 
 databases:
     - name: sylvabot
