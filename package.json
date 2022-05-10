@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node index.ts",
+    "start:prod": "ts-node --transpile-only index.ts",
     "dev": "ts-node-dev index.ts",
     "mikro-orm": "ts-node ./node_modules/@mikro-orm/cli/cli.js",
     "migrate": "npm run mikro-orm -- migration:up"

@@ -1,9 +1,10 @@
 services:
     # A background worker that consumes a queue
     - type: worker
-      name: bot
+      name: sylvabot node worker
       env: node
-      startCommand: npm run start
+      buildCommand: npm i
+      startCommand: npm run start:prod
       plan: starter
 
 databases:
