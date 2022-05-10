@@ -2,6 +2,7 @@ services:
     # A background worker that consumes a queue
     - type: worker
       name: bot
+      env: node
       plan: free
 
 databases:
