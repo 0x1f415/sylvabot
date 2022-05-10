@@ -8,7 +8,7 @@
     "start:prod": "ts-node --transpile-only index.ts",
     "dev": "ts-node-dev index.ts",
     "mikro-orm": "ts-node ./node_modules/@mikro-orm/cli/cli.js",
-    "migrate": "npm run --silent create-db && npm run --silent mikro-orm -- migration:up",
+    "migrate": "npm run --silent create-db && npm run schema:update && npm run --silent mikro-orm -- migration:up",
     "create-db": "ts-node scripts/createDatabase.ts"
   },
   "keywords": [],
