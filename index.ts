@@ -148,7 +148,7 @@ const job = new CronJob(
 const healthCheckJob = new CronJob(
 	'* * * * *', // once a minute
 	() => {
-		sylvaInstance.healthCheck().then(() => console.log('health check ok', (err: any) => console.error('health check failed:', err)))
+		sylvaInstance.healthCheck().then(() => console.log('health check ok'), (err: any) => console.error('health check failed:', err))
 	},
 	null,
 	true,
