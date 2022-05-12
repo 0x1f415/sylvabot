@@ -128,7 +128,7 @@ class SylvaBot {
 		})
 	}
 
-	private async healthCheck() {
+	async healthCheck() {
 		await this.repoQuery(r => r.createQueryBuilder().raw('SELECT NOW();'))
 	}
 }
@@ -139,6 +139,16 @@ const job = new CronJob(
 	CRON,
 	() => {
 		sylvaInstance.process()
+	},
+	null,
+	true,
+	'America/New_York'
+)
+
+const healthCheckJob = new CronJob(
+	'*5 * * * *', // once a minute
+	() => {
+		sylvaInstance.healthCheck().then(() => console.log('health check ok', (err: any) => console.error('health check failed:', err)))
 	},
 	null,
 	true,
