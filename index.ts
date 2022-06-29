@@ -94,9 +94,8 @@ class SylvaBot {
 				`\u{1F3CB} strength'd`,
 				`\u{1F3C3} cardio'd`,
 				`\u{1F966} ate well`,
-				`\u{1F6CC} slept well`,
-				`\u{1F36B} cheat day`,
-				`\u{1F634} rest day`
+				`\u{1F6E0} productivity'd`,
+				`\u{1F331} touched grass`
 			],
 			{
 				is_anonymous: false,
