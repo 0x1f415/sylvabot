@@ -20,4 +20,4 @@ databases:
   - name: sylvabot
     databaseName: sylvabot
     ipAllowList: []
-    plan: free
+    plan: starter
